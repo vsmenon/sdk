@@ -9,12 +9,11 @@ cache:
     - $HOME/.pub-cache/hosted
     - third_party/pkg/dev_compiler/node_modules
 before_install:
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
   - export PATH=`pwd`/depot_tools:"$PATH"
   - 'gclient config --spec=''solutions = [ { "name": ".", "url": "git@github.com:dart-lang/sdk.git", "deps_file": "DEPS", "managed": False, "custom_vars": { "dart_root": "." } } ]'''
   - gclient sync
-  - export CXX=clang++
-  - export CC=clang
   - ./tools/build.py -m release
   - export PATH=`pwd`/out/ReleaseX64/dart-sdk/bin:"$PATH"
   - dart --version
@@ -38,3 +37,11 @@ matrix:
   allow_failures:
     - env: ANALYZER=master
     - env: TEST=node
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.8
+    - g++-4.8
+    - clang
