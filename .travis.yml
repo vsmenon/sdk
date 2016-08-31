@@ -9,7 +9,9 @@ cache:
     - $HOME/.pub-cache/hosted
     - third_party/pkg/dev_compiler/node_modules
 before_install:
-  - gclient config --spec='solutions = [ { "name": ".", "url": "git@github.com:dart-lang/sdk.git", "deps_file": "DEPS", "managed": False, "custom_vars": { "dart_root": "." } } ]'
+  - git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+  - export PATH=`pwd`/depot_tools:"$PATH"
+  - 'gclient config --spec=''solutions = [ { "name": ".", "url": "git@github.com:dart-lang/sdk.git", "deps_file": "DEPS", "managed": False, "custom_vars": { "dart_root": "." } } ]'''
   - gclient sync
   - cd third_party/pkg/dev_compiler
   - ./tool/override_analyzer_dependency.sh
