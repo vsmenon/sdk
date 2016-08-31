@@ -31,7 +31,7 @@ before_install:
   - export PATH=`pwd`/depot_tools:"$PATH"
   - 'gclient config --spec=''solutions = [ { "name": ".", "url": "git@github.com:dart-lang/sdk.git", "deps_file": "DEPS", "managed": False, "custom_vars": { "dart_root": "." } } ]'''
   - gclient sync
-  - if [ "$CXX" ]; then ./tools/build.py -m release ; fi
+  - if [ "$CXX" ]; then ./tools/build.py -m release create_sdk ; fi
   - if [ "$CXX" ]; then export PATH=`pwd`/out/ReleaseX64/dart-sdk/bin:"$PATH" ; fi
   - dart --version
   - cd third_party/pkg/dev_compiler
@@ -47,14 +47,13 @@ script:
   - if [[ "$TEST" == coverage ]]; then ./tool/build_sdk.sh && ./tool/coverage.sh ; fi
   - if [[ "$TEST" == node ]]; then ./tool/node_test.sh ; fi
 env:
+  - ANALYZER=master
   - ANALYZER=master CXX=g++
   - ANALYZER=master CXX=clang++
-  - ANALYZER=master
   - TEST=coverage
   - TEST=node
 matrix:
   allow_failures:
-    - env: ANALYZER=master
     - env: TEST=node
 addons:
   apt:
