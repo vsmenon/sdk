@@ -2,7 +2,6 @@ language: dart
 sudo: false
 dart:
   - dev
-compiler: clang
 cache:
   directories:
     - $HOME/.npm
@@ -14,6 +13,8 @@ before_install:
   - export PATH=`pwd`/depot_tools:"$PATH"
   - 'gclient config --spec=''solutions = [ { "name": ".", "url": "git@github.com:dart-lang/sdk.git", "deps_file": "DEPS", "managed": False, "custom_vars": { "dart_root": "." } } ]'''
   - gclient sync
+  - export CXX=clang++
+  - export CC=clang
   - ./tools/build.py -m release
   - export PATH=`pwd`/out/ReleaseX64/dart-sdk/bin:"$PATH"
   - dart --version
